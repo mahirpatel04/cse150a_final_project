@@ -1,6 +1,6 @@
 # Probabilistic Modeling of Student Success: A Bayesian Network Analysis of Behavioral Determinants
 
-## Setup
+## Setup (Assuming you have Python3 installed)
 
 ```bash
 git clone https://github.com/mahirpatel04/cse150a_final_project.git
