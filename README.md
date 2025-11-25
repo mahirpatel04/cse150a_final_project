@@ -64,6 +64,16 @@ python -m venv .venv
 
 you should see kaggle.exe inside the .venv/Scripts
 
+- Add Kaggle API Token
+- GO TO [Kaggle](https://www.kaggle.com/)
+- Create account and click profile icon
+- Scroll down and create New API token and downloads the "kaggle.json"
+- test if the Kaggle works
+```bash
+kaggle datasets list
+```
+- if results show then you are good to go
+
 ### Ready to go
 
 ```bash
