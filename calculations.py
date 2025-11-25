@@ -132,7 +132,7 @@ def extract_terms(parameters: dict, e: int, p: int, s: int, a: int, h: int):
     
     return dict
     
-def probability_of_performance(parameters: dict, e: int, h: int, s: int, a: int, p: int) -> int:
+def probability_of_performance(parameters: dict, e: int, h: int, s: int, a: int, p: int) -> float:
     """
     Calculate the probability of a student's performance on the final exam given the parameters and the evidence.
     
@@ -160,3 +160,36 @@ def probability_of_performance(parameters: dict, e: int, h: int, s: int, a: int,
     denominator = numerator + denominator_terms["e_term"] * denominator_terms["p_term"] * denominator_terms["s_term"] * denominator_terms["a_term"] * denominator_terms["h_term"]
     
     return numerator / denominator
+
+def calculate_individual(parameters: dict, factor: str) -> float:
+    """
+    Calculate P(E=1 | factor=1) using Bayes' theorem for a single factor.
+    
+    Args:
+        parameters: dict - the parameters for the Naive Bayes model
+        factor: str - the factor to calculate the probability for ("p", "s", "a", or "h")
+        
+    Returns:
+        float - the probability P(E=1 | factor=1)
+    """
+    
+    
+    e_1 = parameters["e_1"]
+    e_0 = parameters["e_0"]
+    
+    if factor == "p":
+        term1 = parameters["p_1_given_e_1"]
+        term2 = parameters["p_1_given_e_0"]
+    elif factor == "s":
+        term1 = parameters["s_1_given_e_1"]
+        term2 = parameters["s_1_given_e_0"]
+    elif factor == "a":
+        term1 = parameters["a_1_given_e_1"]
+        term2 = parameters["a_1_given_e_0"]
+    elif factor == "h":
+        term1 = parameters["h_1_given_e_1"]
+        term2 = parameters["h_1_given_e_0"]
+    else:
+        raise ValueError("Invalid factor")
+    
+    return (term1*e_1) / (term1*e_1 + term2*e_0)

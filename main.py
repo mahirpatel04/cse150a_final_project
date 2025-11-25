@@ -1,4 +1,4 @@
-from calculations import calculate_parameters, probability_of_performance
+from calculations import calculate_parameters, probability_of_performance, calculate_individual
 from preprocess import read_data, clean_data, preprocess, save_data
 import os
 
@@ -15,21 +15,58 @@ def main():
         processed_data = read_data("processed_data.csv")
     
     parameters = calculate_parameters(processed_data)
-
-
-    for key, value in parameters.items():
-        print(f"{key}: {value}")
+    
+    print("\n" + "="*60)
+    print("CONDITIONAL PROBABILITIES WITH MULTIPLE EVIDENCE")
+    print("="*60)
+    
+    # All factors positive
+    prob_1_all_1 = probability_of_performance(parameters, 1, 1, 1, 1, 1)
+    prob_0_all_1 = probability_of_performance(parameters, 0, 1, 1, 1, 1)
+    print(f"\nGiven: H=1, S=1, A=1, P=1 (All factors positive)")
+    print(f"  P(E=1 | H=1, S=1, A=1, P=1) = {prob_1_all_1:.4f} ({prob_1_all_1*100:.2f}%)")
+    print(f"  P(E=0 | H=1, S=1, A=1, P=1) = {prob_0_all_1:.4f} ({prob_0_all_1*100:.2f}%)")
+    
+    # All factors negative
+    prob_1_all_0 = probability_of_performance(parameters, 1, 0, 0, 0, 0)
+    prob_0_all_0 = probability_of_performance(parameters, 0, 0, 0, 0, 0)
+    print(f"\nGiven: H=0, S=0, A=0, P=0 (All factors negative)")
+    print(f"  P(E=1 | H=0, S=0, A=0, P=0) = {prob_1_all_0:.4f} ({prob_1_all_0*100:.2f}%)")
+    print(f"  P(E=0 | H=0, S=0, A=0, P=0) = {prob_0_all_0:.4f} ({prob_0_all_0*100:.2f}%)")
+    
+    print("\n" + "="*60)
+    print("INDIVIDUAL FACTOR PROBABILITIES")
+    print("="*60)
+    
+    attribute_names = {
+        "p": "Previous Scores",
+        "s": "Sleep Hours",
+        "a": "Attendance",
+        "h": "Hours Studied"
+    }
+    attribute_probabilities = {
+        "p": -1,
+        "s": -1,
+        "a": -1,
+        "h": -1,
+    }
+    for attribute in attribute_probabilities.keys():
+        individual = calculate_individual(parameters, attribute)
+        attr_upper = attribute.upper()
+        attribute_probabilities[attribute] = individual
         
-    print("--------------------------------")
-    probability = probability_of_performance(parameters, 1, 1, 1, 1, 1)
-    print("--------------------------------")
-    print(f"P(E=1 | H=1, S=1, A=1, P=1) = {probability}")
-    probability = probability_of_performance(parameters, 0, 1, 1, 1, 1)
-    print(f"P(E=0 | H=1, S=1, A=1, P=1) = {probability}")
-    probability = probability_of_performance(parameters, 1, 0, 0, 0, 0)
-    print(f"P(E=1 | H=0, S=0, A=0, P=0) = {probability}")
-    probability = probability_of_performance(parameters, 0, 0, 0, 0, 0)
-    print(f"P(E=0 | H=0, S=0, A=0, P=0) = {probability}")
+        print(f"  P(E=1 | {attr_upper}=1) [{attribute_names[attribute]:20s}] = {individual:.4f} ({individual*100:.2f}%)")
+    
+    factor_to_name = {
+        "p": "Previous Scores",
+        "s": "Sleep Hours",
+        "a": "Attendance",
+        "h": "Hours Studied"
+    }
+    
+    highest_probability = max(attribute_probabilities.values())
+    highest_probability_attribute = max(attribute_probabilities.keys(), key=attribute_probabilities.get)
+    print(f"\nThe factor that most strongly predicts a successful exam is {factor_to_name[highest_probability_attribute]} with a probability of {highest_probability:.4f} ({highest_probability*100:.2f}%)")
 
 if __name__ == "__main__":
     main()
