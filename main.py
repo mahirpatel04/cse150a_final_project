@@ -66,7 +66,19 @@ def main():
     
     highest_probability = max(attribute_probabilities.values())
     highest_probability_attribute = max(attribute_probabilities.keys(), key=attribute_probabilities.get)
-    print(f"\nThe factor that most strongly predicts a successful exam is {factor_to_name[highest_probability_attribute]} with a probability of {highest_probability:.4f} ({highest_probability*100:.2f}%)")
-
+    
+    lowest_probability = min(attribute_probabilities.values())
+    lowest_probability_attribute = min(attribute_probabilities.keys(), key=attribute_probabilities.get)
+    
+    
+    # Insights
+    
+    print("--------------------------------")
+    print("INSIGHTS")
+    print("--------------------------------")
+    print(f"The factor that most strongly predicts a successful exam is {factor_to_name[highest_probability_attribute]} with a probability of {highest_probability:.4f} ({highest_probability*100:.2f}%)")
+    print()
+    print(f"The factor that least strongly predicts a successful exam is {factor_to_name[lowest_probability_attribute]} with a probability of {lowest_probability:.4f} ({lowest_probability*100:.2f}%)")
+    print()
 if __name__ == "__main__":
     main()
