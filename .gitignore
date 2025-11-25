@@ -38,6 +38,7 @@ env/
 
 # Project specific
 data/
+output/
 
 # Jupyter Notebook
 .ipynb_checkpoints

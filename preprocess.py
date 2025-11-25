@@ -1,6 +1,13 @@
 import pandas as pd
 import os
 from pathlib import Path
+from enum import Enum
+
+class ProcessingType(Enum):
+    TWENTY_FIVE_PERCENT = "twenty_five_percent"
+    AVERAGE = "average"
+    TEN_PERCENT = "ten_percent"
+    
 
 def read_data(file_path: str) -> pd.DataFrame:
     """
@@ -22,7 +29,7 @@ def clean_data(data: pd.DataFrame) -> pd.DataFrame:
     return data.dropna()
 
 
-def preprocess(data: pd.DataFrame) -> pd.DataFrame:
+def preprocess(data: pd.DataFrame, processing_type: ProcessingType) -> pd.DataFrame:
     """
     Preprocess the data by converting everything into binary values.
     
@@ -36,10 +43,19 @@ def preprocess(data: pd.DataFrame) -> pd.DataFrame:
     """
     for column in data.columns:
         if column != "student_id":
-            # First calculate the 75th percentile (top 25% threshold)
-            percentile = data[column].quantile(0.75)
-            # Then convert to binary (1 if in top 25%, 0 otherwise)
-            data[column] = data[column].apply(lambda x: 1 if x > percentile else 0)
+            
+            if processing_type == ProcessingType.TWENTY_FIVE_PERCENT:   
+                threshold = data[column].quantile(0.75)
+            elif processing_type == ProcessingType.AVERAGE:
+                threshold = data[column].mean()
+            elif processing_type == ProcessingType.TEN_PERCENT:
+                threshold = data[column].quantile(0.9)
+            else:
+                raise ValueError(f"Invalid processing type: {processing_type}")
+            
+            
+            # Then convert to binary depending on the processing type
+            data[column] = data[column].apply(lambda x: 1 if x > threshold else 0)
     return data
 
 def save_data(data: pd.DataFrame, file_path: str) -> None:
