@@ -32,7 +32,7 @@ pacman -Syu
 pacman -Sy make unzip
 ```
 
-- Add the following yo System PATH:
+- Add the following to your local System PATH:
 
 ```bash
 C:\msys64\usr\bin
@@ -41,8 +41,13 @@ C:\msys64\mingw64\bin
 
 - Restart the VS code
 
-### After cloning the project Create Virtual Env
+### After cloning the project 
+- First make sure your Makefile have a proper path by:
+```bash
+make --version
+```
 
+- Create Virtual Env
 ```bash
 python -m venv .venv
 ```
