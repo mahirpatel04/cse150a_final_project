@@ -79,8 +79,6 @@ def main():
         output += f"The factor that most strongly predicts a successful exam is {factor_to_name[highest_probability_attribute]} with a probability of {highest_probability:.4f} ({highest_probability*100:.2f}%)" + "\n"
         output += f"The factor that least strongly predicts a successful exam is {factor_to_name[lowest_probability_attribute]} with a probability of {lowest_probability:.4f} ({lowest_probability*100:.2f}%)" + "\n"
         
-        output += f"The factor that least strongly predicts a successful exam is {factor_to_name[lowest_probability_attribute]} with a probability of {lowest_probability:.4f} ({lowest_probability*100:.2f}%)"
-        
         
         # Get the directory where this script is located
         script_dir = os.path.dirname(os.path.abspath(__file__))

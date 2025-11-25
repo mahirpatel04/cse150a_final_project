@@ -7,6 +7,7 @@ class ProcessingType(Enum):
     TWENTY_FIVE_PERCENT = "twenty_five_percent"
     AVERAGE = "average"
     TEN_PERCENT = "ten_percent"
+    ONE_STANDARD_DEVIATION = "one_standard_deviation"
     
 
 def read_data(file_path: str) -> pd.DataFrame:
@@ -50,6 +51,8 @@ def preprocess(data: pd.DataFrame, processing_type: ProcessingType) -> pd.DataFr
                 threshold = data[column].mean()
             elif processing_type == ProcessingType.TEN_PERCENT:
                 threshold = data[column].quantile(0.9)
+            elif processing_type == ProcessingType.ONE_STANDARD_DEVIATION:
+                threshold = data[column].mean() + data[column].std()
             else:
                 raise ValueError(f"Invalid processing type: {processing_type}")
             
