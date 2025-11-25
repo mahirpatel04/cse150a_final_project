@@ -1,12 +1,21 @@
 from calculations import calculate_parameters, probability_of_performance
-from preprocess import read_data
+from preprocess import read_data, clean_data, preprocess, save_data
+import os
 
 def main():
     """
     Main function to run the program.
     """
-    data = read_data("processed_data.csv")
-    parameters = calculate_parameters(data)
+    if not os.path.exists("processed_data.csv"):
+        data = read_data("student_exam_scores.csv")
+        cleaned_data = clean_data(data)
+        processed_data = preprocess(cleaned_data.copy())
+        save_data(processed_data, "processed_data.csv")
+    else:
+        processed_data = read_data("processed_data.csv")
+    
+    parameters = calculate_parameters(processed_data)
+
 
     for key, value in parameters.items():
         print(f"{key}: {value}")

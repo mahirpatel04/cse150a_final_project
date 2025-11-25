@@ -55,6 +55,3 @@ def main():
     cleaned_data = clean_data(data)
     processed_data = preprocess(cleaned_data.copy())
     save_data(processed_data, "processed_data.csv")
-
-if __name__ == "__main__":
-    main()
